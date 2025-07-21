@@ -1,0 +1,36 @@
+{
+  "name": "veo3-prompt-generator",
+  "version": "1.0.0",
+  "description": "AI-powered Veo3 prompt generator with admin dashboard",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
+    "dev:client": "cd client && npm run dev",
+    "dev:server": "cd server && npm run dev",
+    "build": "npm run build:client && npm run build:server",
+    "build:client": "cd client && npm run build",
+    "build:server": "cd server && npm run build",
+    "start": "cd server && npm start",
+    "install:all": "npm install && cd client && npm install && cd ../server && npm install",
+    "docker:build": "docker-compose build",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f",
+    "deploy": "./scripts/deploy.sh deploy",
+    "update": "./scripts/deploy.sh update",
+    "backup": "./scripts/deploy.sh backup",
+    "security:monitor": "./scripts/security-monitor.sh",
+    "lint": "cd client && npm run lint && cd ../server && npm run lint",
+    "test": "cd server && npm test",
+    "clean": "rm -rf client/.next client/out server/dist node_modules/*/node_modules",
+    "vercel:deploy": "./scripts/deploy-vercel.sh",
+    "vercel:dev": "cd client && vercel dev",
+    "vercel:build": "cd client && npm run build"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "sharp": "^0.34.3"
+  }
+}

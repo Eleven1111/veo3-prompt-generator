@@ -1,0 +1,31 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "client/package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/client/$1"
+    }
+  ],
+  "env": {
+    "GEMINI_API_KEY": "@gemini-api-key",
+    "DATABASE_URL": "@database-url",
+    "REDIS_URL": "@redis-url",
+    "JWT_SECRET": "@jwt-secret",
+    "NODE_ENV": "production"
+  },
+  "functions": {
+    "client/src/app/api/**/*.ts": {
+      "maxDuration": 30
+    }
+  }
+}
