@@ -11,10 +11,6 @@
     }
   ],
   "env": {
-    "GEMINI_API_KEY": "@gemini-api-key",
-    "DATABASE_URL": "@database-url",
-    "REDIS_URL": "@redis-url",
-    "JWT_SECRET": "@jwt-secret",
     "NODE_ENV": "production"
   },
   "functions": {
