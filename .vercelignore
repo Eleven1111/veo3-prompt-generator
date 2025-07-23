@@ -1,0 +1,62 @@
+# Ignore server directory and other non-client files
+server/
+scripts/
+test-*.js
+test-*.html
+*.md
+!client/README.md
+docker-compose.yml
+Dockerfile
+nginx.conf
+.env.example
+UPLOAD_TO_GITHUB.md
+TEST_REPORT.md
+VERCEL_DEPLOYMENT.md
+GEMINI_API_SETUP.md
+GITHUB_SETUP.md
+QUICKSTART.md
+CONTRIBUTING.md
+LICENSE
+
+# Node modules (will be installed by Vercel)
+node_modules/
+server/node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db

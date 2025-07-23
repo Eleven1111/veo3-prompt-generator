@@ -54,12 +54,6 @@ const nextConfig = {
 
   // Webpack configuration
   webpack: (config, { dev, isServer }) => {
-    // Sharp optimization for Vercel
-    if (isServer) {
-      config.externals = config.externals || []
-      config.externals.push('sharp')
-    }
-
     // Production optimizations
     if (!dev && !isServer) {
       config.optimization.splitChunks = {

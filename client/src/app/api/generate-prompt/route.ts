@@ -2,14 +2,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { headers } from 'next/headers'
 import { GoogleGenerativeAI } from '@google/generative-ai'
 
-// Dynamic import for sharp to handle Vercel deployment issues
-let sharp: any = null
-try {
-  sharp = require('sharp')
-} catch (error) {
-  console.warn('Sharp not available, image processing will be limited')
-}
-
 // Initialize Gemini
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '')
 const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-exp' })
@@ -31,22 +23,14 @@ const detectMaliciousContent = (text: string): boolean => {
   return maliciousPatterns.some(pattern => pattern.test(text))
 }
 
-const sanitizeImageMetadata = async (buffer: Buffer): Promise<Buffer> => {
-  if (!sharp) {
-    // Fallback: return original buffer if sharp is not available
-    console.warn('Sharp not available, returning original image buffer')
-    return buffer
-  }
+// Simple image validation without processing
+const validateImage = (buffer: Buffer): boolean => {
+  // Basic image validation - check for common image file signatures
+  const jpegSignature = buffer.slice(0, 3).toString('hex') === 'ffd8ff'
+  const pngSignature = buffer.slice(0, 8).toString('hex') === '89504e470d0a1a0a'
+  const webpSignature = buffer.slice(8, 12).toString() === 'WEBP'
   
-  try {
-    return await sharp(buffer)
-      .jpeg({ quality: 80 })
-      .resize(1024, 1024, { fit: 'inside', withoutEnlargement: true })
-      .toBuffer()
-  } catch (error) {
-    console.error('Sharp processing failed, returning original buffer:', error)
-    return buffer
-  }
+  return jpegSignature || pngSignature || webpSignature
 }
 
 // Rate limiting
@@ -222,7 +206,16 @@ export async function POST(request: NextRequest) {
         }
 
         const buffer = Buffer.from(await imageFile.arrayBuffer())
-        processedImageBuffer = await sanitizeImageMetadata(buffer)
+        
+        // Validate image format
+        if (!validateImage(buffer)) {
+          return NextResponse.json(
+            { error: 'Invalid image format. Please upload a valid JPEG, PNG, or WebP image.' },
+            { status: 400 }
+          )
+        }
+        
+        processedImageBuffer = buffer
       } catch (error) {
         console.error('Image processing error:', error)
         return NextResponse.json(
