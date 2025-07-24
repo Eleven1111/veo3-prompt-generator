@@ -1,15 +1,15 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server';
 
 // Mock data for demo (in production, connect to your database)
 const generateMockDashboardData = () => {
-  const now = new Date()
-  const dates = []
+  const now = new Date();
+  const dates = [];
   
   // Generate last 7 days data
   for (let i = 6; i >= 0; i--) {
-    const date = new Date(now)
-    date.setDate(date.getDate() - i)
-    dates.push(date.toISOString().split('T')[0])
+    const date = new Date(now);
+    date.setDate(date.getDate() - i);
+    dates.push(date.toISOString().split('T')[0]);
   }
 
   return {
@@ -35,28 +35,26 @@ const generateMockDashboardData = () => {
       status: Math.random() > 0.1 ? 'success' : 'error',
       userAgent: 'Mozilla/5.0 (compatible; Demo/1.0)'
     }))
-  }
-}
+  };
+};
 
 export async function GET(request: NextRequest) {
   try {
+    // For demo purposes, allow access without auth
     // In production, verify admin authentication here
-    const authHeader = request.headers.get('authorization')
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      // For demo purposes, we'll allow access without auth
-      // In production, return 401 here
-    }
-
+    
     // Generate mock data (in production, query your database)
-    const dashboardData = generateMockDashboardData()
+    const dashboardData = generateMockDashboardData();
 
-    return NextResponse.json(dashboardData)
+    return NextResponse.json(dashboardData);
 
   } catch (error) {
-    console.error('Dashboard data error:', error)
+    console.error('Dashboard data error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
-    )
+    );
   }
 }
+
+export const maxDuration = 30;

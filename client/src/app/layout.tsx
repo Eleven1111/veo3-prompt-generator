@@ -1,9 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import { Toaster } from 'react-hot-toast'
-import { QueryClient, QueryClientProvider } from 'react-query'
-import { useState } from 'react'
+import { Providers } from './providers'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -29,36 +27,6 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  verification: {
-    google: 'your-google-verification-code',
-  },
-}
-
-function RootLayoutClient({ children }: { children: React.ReactNode }) {
-  const [queryClient] = useState(() => new QueryClient({
-    defaultOptions: {
-      queries: {
-        staleTime: 5 * 60 * 1000, // 5 minutes
-        cacheTime: 10 * 60 * 1000, // 10 minutes
-      },
-    },
-  }))
-
-  return (
-    <QueryClientProvider client={queryClient}>
-      {children}
-      <Toaster 
-        position="top-right"
-        toastOptions={{
-          duration: 4000,
-          style: {
-            background: '#363636',
-            color: '#fff',
-          },
-        }}
-      />
-    </QueryClientProvider>
-  )
 }
 
 export default function RootLayout({
@@ -74,7 +42,7 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" />
       </head>
       <body className={inter.className}>
-        <RootLayoutClient>{children}</RootLayoutClient>
+        <Providers>{children}</Providers>
       </body>
     </html>
   )
