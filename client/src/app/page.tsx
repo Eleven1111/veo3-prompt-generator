@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
 import { Upload, Type, Image, Sparkles, RefreshCw, Copy, Check, ChevronRight, Zap, Brain, Eye, Target } from 'lucide-react'
 import { useDropzone } from 'react-dropzone'
 import { useForm } from 'react-hook-form'
@@ -34,8 +33,6 @@ export default function HomePage() {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [activeCard, setActiveCard] = useState<string>('')
   
-  const { scrollYProgress } = useScroll()
-  const backgroundY = useTransform(scrollYProgress, [0, 1], ['0%', '100%'])
   
   const { register, handleSubmit, formState: { errors }, watch, setValue } = useForm<FormData>()
 
@@ -146,30 +143,25 @@ export default function HomePage() {
       <div className="fixed inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-black to-cyan-900/20" />
         <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width=%2260%22%20height=%2260%22%20viewBox=%220%200%2060%2060%22%20xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cg%20fill=%22none%22%20fill-rule=%22evenodd%22%3E%3Cg%20fill=%22%239C92AC%22%20fill-opacity=%220.1%22%3E%3Cpath%20d=%22M36%2034v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6%2034v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6%204V0H4v4H0v2h4v4h2V6h4V4H6z%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-30" />
-        <motion.div
+        <div
           className="absolute inset-0 bg-gradient-to-r from-purple-500/10 via-transparent to-cyan-500/10"
-          animate={{ rotate: 360 }}
-          transition={{ duration: 50, repeat: Infinity, ease: "linear" }}
         />
       </div>
 
       {/* Cursor Glow Effect */}
-      <motion.div
+      <div
         className="fixed w-96 h-96 rounded-full bg-gradient-to-r from-purple-500/20 to-cyan-500/20 blur-3xl pointer-events-none z-10"
-        animate={{
-          x: mousePosition.x - 192,
-          y: mousePosition.y - 192,
+        style={{
+          transform: `translate(${mousePosition.x - 192}px, ${mousePosition.y - 192}px)`
         }}
-        transition={{ type: "spring", damping: 30, stiffness: 200 }}
       />
 
       {/* Navigation */}
       <nav className="relative z-20 backdrop-blur-xl border-b border-white/10">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-between h-20">
-            <motion.div 
+            <div 
               className="flex items-center space-x-3"
-              whileHover={{ scale: 1.05 }}
             >
               <div className="relative">
                 <div className="w-12 h-12 bg-gradient-to-br from-purple-500 via-pink-500 to-cyan-500 rounded-xl flex items-center justify-center">
@@ -183,31 +175,27 @@ export default function HomePage() {
                 </h1>
                 <p className="text-sm text-gray-400">Prompt Generator</p>
               </div>
-            </motion.div>
+            </div>
             
             <div className="flex items-center space-x-6">
-              <motion.a 
+              <a 
                 href="#features" 
                 className="text-gray-300 hover:text-white transition-colors"
-                whileHover={{ scale: 1.1 }}
               >
                 Features
-              </motion.a>
-              <motion.a 
+              </a>
+              <a 
                 href="#generator" 
                 className="text-gray-300 hover:text-white transition-colors"
-                whileHover={{ scale: 1.1 }}
               >
                 Generator
-              </motion.a>
-              <motion.a 
+              </a>
+              <a 
                 href="/admin" 
                 className="px-4 py-2 bg-gradient-to-r from-purple-500 to-cyan-500 rounded-lg text-white font-medium"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
               >
                 Dashboard
-              </motion.a>
+              </a>
             </div>
           </div>
         </div>
@@ -217,11 +205,7 @@ export default function HomePage() {
       <section className="relative z-20 py-20 lg:py-32">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.2 }}
-            >
+            <div>
               <h1 className="text-5xl md:text-7xl font-bold mb-6">
                 <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent">
                   Transform Ideas
@@ -232,12 +216,9 @@ export default function HomePage() {
               <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto mb-8">
                 AI-powered Veo3 prompt generator that transforms your creative vision into stunning video prompts with cinematic precision
               </p>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.4 }}
+            <div
               className="flex flex-wrap justify-center gap-8 text-gray-400"
             >
               <div className="flex items-center space-x-2">
@@ -252,7 +233,7 @@ export default function HomePage() {
                 <Target className="w-5 h-5 text-pink-400" />
                 <span>Cinematic Quality</span>
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
@@ -260,11 +241,7 @@ export default function HomePage() {
       {/* Generator Section */}
       <section id="generator" className="relative z-20 py-20">
         <div className="max-w-6xl mx-auto px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
+          <div
             className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 lg:p-12"
           >
             <div className="text-center mb-12">
@@ -275,11 +252,8 @@ export default function HomePage() {
             {/* Input Type Selection */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
               {inputTypes.map((type, index) => (
-                <motion.button
+                <button
                   key={type.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
                   onClick={() => setSelectedType(type.id as any)}
                   className={`relative group p-6 rounded-2xl border transition-all duration-300 ${
                     selectedType === type.id
@@ -293,7 +267,7 @@ export default function HomePage() {
                   }`} />
                   <h3 className="text-lg font-semibold mb-2 text-white">{type.label}</h3>
                   <p className="text-sm text-gray-400">{type.desc}</p>
-                </motion.button>
+                </button>
               ))}
             </div>
 
@@ -301,11 +275,7 @@ export default function HomePage() {
             <form onSubmit={handleSubmit(generatePrompt)} className="space-y-8">
               {/* Text Input */}
               {(selectedType === 'text' || selectedType === 'text-image') && (
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  className="space-y-2"
-                >
+                <div className="space-y-2">
                   <label className="text-lg font-medium text-white">Creative Description</label>
                   <textarea
                     {...register('text', { required: selectedType === 'text' })}
@@ -313,16 +283,12 @@ export default function HomePage() {
                     className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                     placeholder="Describe your cinematic vision... e.g., 'A cyberpunk city at night with neon lights reflecting on wet streets'"
                   />
-                </motion.div>
+                </div>
               )}
 
               {/* Image Upload */}
               {(selectedType === 'text-image' || selectedType === 'image') && (
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  className="space-y-2"
-                >
+                <div className="space-y-2">
                   <label className="text-lg font-medium text-white">Reference Image</label>
                   <div
                     {...getRootProps()}
@@ -352,7 +318,7 @@ export default function HomePage() {
                       )}
                     </div>
                   </div>
-                </motion.div>
+                </div>
               )}
 
               {/* Advanced Options */}
@@ -399,28 +365,18 @@ export default function HomePage() {
               </div>
 
               {/* Generate Button */}
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+              <button
                 type="submit"
                 disabled={isGenerating}
                 className="w-full relative overflow-hidden bg-gradient-to-r from-purple-600 via-pink-600 to-cyan-600 text-white font-bold py-4 px-8 rounded-2xl text-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <motion.div
-                  className="absolute inset-0 bg-white/20"
-                  initial={{ x: '-100%' }}
-                  animate={isGenerating ? { x: '100%' } : { x: '-100%' }}
-                  transition={{ duration: 1.5, repeat: isGenerating ? Infinity : 0 }}
-                />
+                <div className={`absolute inset-0 bg-white/20 ${isGenerating ? 'animate-pulse' : ''}`} />
                 <div className="relative flex items-center justify-center space-x-2">
                   {isGenerating ? (
                     <>
-                      <motion.div
-                        animate={{ rotate: 360 }}
-                        transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                      >
+                      <div className="animate-spin">
                         <Sparkles className="w-6 h-6" />
-                      </motion.div>
+                      </div>
                       <span>Generating AI Magic...</span>
                     </>
                   ) : (
@@ -430,26 +386,18 @@ export default function HomePage() {
                     </>
                   )}
                 </div>
-              </motion.button>
+              </button>
             </form>
 
             {/* Results */}
-            <AnimatePresence>
-              {generatedPrompt && (
-                <motion.div
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -50 }}
-                  className="space-y-6"
-                >
+            {generatedPrompt && (
+              <div className="space-y-6">
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     {/* Main Prompt */}
                     <div className="lg:col-span-2 bg-gradient-to-br from-purple-500/10 to-cyan-500/10 border border-white/10 rounded-2xl p-6">
                       <div className="flex items-center justify-between mb-4">
                         <h3 className="text-xl font-bold text-white">Generated Prompt</h3>
-                        <motion.button
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
+                        <button
                           onClick={() => copyToClipboard(generatedPrompt.prompt, 'prompt')}
                           className="p-2 bg-white/10 rounded-lg hover:bg-white/20 transition-colors"
                         >
@@ -458,7 +406,7 @@ export default function HomePage() {
                           ) : (
                             <Copy className="w-5 h-5 text-gray-300" />
                           )}
-                        </motion.button>
+                        </button>
                       </div>
                       <p className="text-gray-300 leading-relaxed">{generatedPrompt.prompt}</p>
                     </div>
@@ -471,15 +419,12 @@ export default function HomePage() {
                       </h4>
                       <div className="flex flex-wrap gap-2">
                         {generatedPrompt.visualElements.map((element, i) => (
-                          <motion.span
+                          <span
                             key={i}
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: i * 0.1 }}
                             className="px-3 py-1 bg-purple-500/20 border border-purple-500/30 rounded-full text-sm text-purple-200"
                           >
                             {element}
-                          </motion.span>
+                          </span>
                         ))}
                       </div>
                     </div>
@@ -492,15 +437,12 @@ export default function HomePage() {
                       </h4>
                       <div className="flex flex-wrap gap-2">
                         {generatedPrompt.cameraMovements.map((movement, i) => (
-                          <motion.span
+                          <span
                             key={i}
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: i * 0.1 }}
                             className="px-3 py-1 bg-cyan-500/20 border border-cyan-500/30 rounded-full text-sm text-cyan-200"
                           >
                             {movement}
-                          </motion.span>
+                          </span>
                         ))}
                       </div>
                     </div>
@@ -516,23 +458,19 @@ export default function HomePage() {
                       <h4 className="text-lg font-semibold text-white mb-3">Color Palette</h4>
                       <div className="flex flex-wrap gap-2">
                         {generatedPrompt.colorPalette.map((color, i) => (
-                          <motion.div
+                          <div
                             key={i}
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: i * 0.1 }}
                             className="px-3 py-1 bg-gradient-to-r from-pink-500/20 to-orange-500/20 border border-pink-500/30 rounded-full text-sm text-pink-200"
                           >
                             {color}
-                          </motion.div>
+                          </div>
                         ))}
                       </div>
                     </div>
                   </div>
-                </motion.div>
+                </div>
               )}
-            </AnimatePresence>
-          </motion.div>
+          </div>
         </div>
       </section>
 
