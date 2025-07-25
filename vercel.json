@@ -1,8 +1,16 @@
 {
   "version": 2,
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install",
+  "rootDirectory": "client",
   "functions": {
-    "client/src/app/api/**/*.ts": {
+    "src/app/api/**/*.ts": {
       "maxDuration": 30
     }
+  },
+  "env": {
+    "GEMINI_API_KEY": "@gemini-api-key"
   }
 }
